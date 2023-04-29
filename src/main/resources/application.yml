@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC
+    username: root
+    password: 1111
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -11,4 +15,8 @@ spring:
 
   profiles:
     include: auth
+
+jwt:
+  token:
+    secret: "secretKey"
 
