@@ -1,0 +1,62 @@
+package Distributed.System.team4server.service;
+
+import static Distributed.System.team4server.dto.DefaultResponseDto.result;
+
+import Distributed.System.team4server.domain.Authority;
+import Distributed.System.team4server.domain.User;
+import Distributed.System.team4server.dto.DefaultResponseDto;
+import Distributed.System.team4server.dto.User.UserDto;
+import Distributed.System.team4server.dto.User.UserSaveRequestDto;
+import Distributed.System.team4server.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<DefaultResponseDto> findUser(String userId) {
+        Optional<User> user = userRepository.findByUserId(userId);
+
+        if (user.isPresent()) {
+            return result(HttpStatus.CONFLICT, "이미 가입되어 있는 유저입니다.");
+        }
+
+        return result(HttpStatus.OK, "사용 가능한 아이디입니다.");
+    }
+
+    @Transactional
+    public ResponseEntity<DefaultResponseDto> signUp(HttpServletRequest request, UserSaveRequestDto user) {
+        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
+            return result(HttpStatus.CONFLICT, "이미 가입되어 있는 유저입니다.");
+        }
+
+        Authority authority = Authority.builder()
+                .authorityName("USER")
+                .build();
+
+        User newUser = User.builder()
+                .userName(user.getUserName())
+                .userId(user.getUserId())
+                .passwd(passwordEncoder.encode(user.getPasswd()))
+                .authorities(Collections.singleton(authority))
+                .build();
+
+        userRepository.save(newUser);
+
+        return result(HttpStatus.OK, new UserDto(newUser));
+    }
+}
