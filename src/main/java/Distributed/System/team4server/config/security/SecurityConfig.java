@@ -45,6 +45,7 @@ public class SecurityConfig {
         http
                 /* token 을 사용하는 방식이기 때문에 csrf disable */
                 .csrf().disable()
+                .cors().and()
 
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
@@ -58,12 +59,13 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+
                 .and()
                 .authorizeHttpRequests()
-
                 /* /user 로 시작하는 접근만 허용하고 나머지(/board)는 접근 제한 */
                 .requestMatchers("/main", "/user/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 

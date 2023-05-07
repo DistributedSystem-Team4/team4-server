@@ -1,4 +1,4 @@
-package Distributed.System.team4server.dto.User;
+package Distributed.System.team4server.dto.user;
 
 import Distributed.System.team4server.domain.User;
 import lombok.Getter;

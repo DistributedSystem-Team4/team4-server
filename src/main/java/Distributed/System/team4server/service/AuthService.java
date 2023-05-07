@@ -5,8 +5,8 @@ import static Distributed.System.team4server.dto.DefaultResponseDto.result;
 import Distributed.System.team4server.config.jwt.TokenProvider;
 import Distributed.System.team4server.domain.User;
 import Distributed.System.team4server.dto.DefaultResponseDto;
-import Distributed.System.team4server.dto.User.UserDto;
-import Distributed.System.team4server.dto.User.UserLoginDto;
+import Distributed.System.team4server.dto.user.UserDto;
+import Distributed.System.team4server.dto.user.UserLoginDto;
 import Distributed.System.team4server.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -47,6 +50,7 @@ public class AuthService {
 
         //log.info("로그인 시도중2, {}", authenticationToken);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         //log.info("로그인 시도중3");
         String token = tokenProvider.createToken(authentication);

@@ -49,7 +49,7 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(byteKey);
     }
 
-    //userId 를 받아 JWT 토큰 생성
+    //Authentication 를 받아 JWT 토큰 생성
     public String createToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

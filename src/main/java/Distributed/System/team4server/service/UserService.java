@@ -5,8 +5,8 @@ import static Distributed.System.team4server.dto.DefaultResponseDto.result;
 import Distributed.System.team4server.domain.Authority;
 import Distributed.System.team4server.domain.User;
 import Distributed.System.team4server.dto.DefaultResponseDto;
-import Distributed.System.team4server.dto.User.UserDto;
-import Distributed.System.team4server.dto.User.UserSaveRequestDto;
+import Distributed.System.team4server.dto.user.UserDto;
+import Distributed.System.team4server.dto.user.UserSaveRequestDto;
 import Distributed.System.team4server.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class UserService {
         }
 
         Authority authority = Authority.builder()
-                .authorityName("USER")
+                .authorityName("ROLE_USER")
                 .build();
 
         User newUser = User.builder()

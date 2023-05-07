@@ -43,7 +43,9 @@ public class DefaultResponseDto {
         return new ResponseEntity<>(response, headers, status);
     }
 
-    //status, result=유저정보
+    //status, result=게시글 생성 완료
+
+
 
     //status, result=게시글정보
 

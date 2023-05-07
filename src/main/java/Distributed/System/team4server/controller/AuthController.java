@@ -1,7 +1,7 @@
 package Distributed.System.team4server.controller;
 
 import Distributed.System.team4server.dto.DefaultResponseDto;
-import Distributed.System.team4server.dto.User.UserLoginDto;
+import Distributed.System.team4server.dto.user.UserLoginDto;
 import Distributed.System.team4server.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

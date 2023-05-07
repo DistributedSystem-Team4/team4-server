@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ import org.hibernate.annotations.DynamicUpdate;
 public class User {
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id", unique = true)
     private String userId;
 
     private String passwd;
@@ -45,4 +46,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_name")
     )
     private Set<Authority> authorities;
+
+    @PrePersist
+    public void createdAt() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,9 +32,6 @@ public class Board {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "username")
-    private String userName;
-
     private String title;
     private String content;
 
@@ -42,4 +40,10 @@ public class Board {
 
     @Column(name = "edited_at")
     private LocalDateTime editedAt;
+
+    @PrePersist
+    public void createdAt() {
+        this.createdAt = LocalDateTime.now();
+    }
+
 }
