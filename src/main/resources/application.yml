@@ -9,7 +9,7 @@ spring:
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-#      ddl-auto: create
+      ddl-auto: none
 #    defer-datasource-initialization: true #DB에 초기 데이터 삽입을 위함.
 #
 #  sql:
