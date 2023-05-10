@@ -5,13 +5,18 @@ import Distributed.System.team4server.domain.User;
 import Distributed.System.team4server.dto.board.BoardEditRequestDto;
 import Distributed.System.team4server.dto.board.BoardPostRequestDto;
 import Distributed.System.team4server.dto.DefaultResponseDto;
+import Distributed.System.team4server.dto.board.BoardReadResponseDto;
 import Distributed.System.team4server.repository.BoardRepository;
 import Distributed.System.team4server.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,9 +59,31 @@ public class BoardService {
         return result(HttpStatus.OK, null);
     }
 
-    public boolean isExistedBoard(Long boardId) {
+    public ResponseEntity<DefaultResponseDto> getBoardList(Pageable pageable) {
+        Page<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
+
+        List<BoardReadResponseDto> list = new ArrayList<>();
+        for (Board board : boardList) {
+            BoardReadResponseDto readResponseDto = new BoardReadResponseDto(board);
+            list.add(readResponseDto);
+        }
+
+        return result(HttpStatus.OK, list);
+    }
+
+    public ResponseEntity<DefaultResponseDto> getBoardInfo(Long boardId) {
+        return result(HttpStatus.OK, boardRepository.findById(boardId).get());
+    }
+
+    public boolean isExistBoard(long boardId) {
         Optional<Board> board = boardRepository.findById(boardId);
         return board.isPresent();
+    }
+
+    public boolean isValidPage(Long pageNum) {
+        long count = boardRepository.count();
+        log.info("현재 게시글 총 개수 : {}", count);
+        return count / 10 >= pageNum;
     }
 
 }
