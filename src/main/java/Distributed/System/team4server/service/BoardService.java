@@ -61,6 +61,7 @@ public class BoardService {
 
     public ResponseEntity<DefaultResponseDto> getBoardList(Pageable pageable) {
         Page<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
+        long count = boardRepository.count() / 10;
 
         List<BoardReadResponseDto> list = new ArrayList<>();
         for (Board board : boardList) {
@@ -68,7 +69,7 @@ public class BoardService {
             list.add(readResponseDto);
         }
 
-        return result(HttpStatus.OK, list);
+        return result(HttpStatus.OK, list, count);
     }
 
     public ResponseEntity<DefaultResponseDto> getBoardInfo(Long boardId) {

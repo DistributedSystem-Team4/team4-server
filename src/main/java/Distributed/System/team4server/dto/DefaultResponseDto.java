@@ -30,6 +30,19 @@ public class DefaultResponseDto {
         return new ResponseEntity<>(response, headers, status);
     }
 
+    //총 게시물 수도 같이 반환하는 dto
+    public static ResponseEntity<DefaultResponseDto> result(HttpStatus status, Object result, long totalBoard) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf-8");
+        headers.add("Totalpage", String.valueOf(totalBoard));
+
+        DefaultResponseDto response = new DefaultResponseDto();
+        response.setStatus(status);
+        response.setResult(result);
+
+        return new ResponseEntity<>(response, headers, status);
+    }
+
     //status, jwt (로그인 시 토큰 발급용)
     public static ResponseEntity<DefaultResponseDto> result(HttpStatus status, Object result, String token) {
         HttpHeaders headers = new HttpHeaders();
@@ -44,8 +57,6 @@ public class DefaultResponseDto {
     }
 
     //status, result=게시글 생성 완료
-
-
 
     //status, result=게시글정보
 
