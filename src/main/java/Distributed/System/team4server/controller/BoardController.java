@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +28,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "", params = "page")
     public ResponseEntity<DefaultResponseDto> getBoardListByPage(@PageableDefault(size = 10) Pageable pageable) {
         if (!boardService.isValidPage((long) pageable.getPageNumber())) {
@@ -38,6 +38,7 @@ public class BoardController {
         return boardService.getBoardList(pageable);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/info")
     public ResponseEntity<DefaultResponseDto> getBoardInfo(@RequestParam Long boardId) {
         if (!boardService.isExistBoard(boardId)) {
@@ -47,13 +48,13 @@ public class BoardController {
         return boardService.getBoardInfo(boardId);
     }
 
-    @Secured("ROLE_USER")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/post")
     public ResponseEntity<DefaultResponseDto> createBoard(HttpServletRequest request, @RequestBody BoardPostRequestDto board) {
         return boardService.createBoard(request, board);
     }
 
-    @Secured("ROLE_USER")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PutMapping("/edit")
     public ResponseEntity<DefaultResponseDto> editBoard(HttpServletRequest request, @RequestBody BoardEditRequestDto board) {
         if (!boardService.isExistBoard(board.getBoardId())) {
