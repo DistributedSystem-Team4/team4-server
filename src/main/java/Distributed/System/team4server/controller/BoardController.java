@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,13 +47,13 @@ public class BoardController {
         return boardService.getBoardInfo(boardId);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @Secured("ROLE_USER")
     @PostMapping("/post")
     public ResponseEntity<DefaultResponseDto> createBoard(HttpServletRequest request, @RequestBody BoardPostRequestDto board) {
         return boardService.createBoard(request, board);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @Secured("ROLE_USER")
     @PutMapping("/edit")
     public ResponseEntity<DefaultResponseDto> editBoard(HttpServletRequest request, @RequestBody BoardEditRequestDto board) {
         if (!boardService.isExistBoard(board.getBoardId())) {
