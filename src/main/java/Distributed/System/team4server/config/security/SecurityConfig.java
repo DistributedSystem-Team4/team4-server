@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 /* /user 로 시작하는 접근만 허용하고 나머지(/board)는 접근 제한 */
-                .requestMatchers("/main", "/user/**").permitAll()
+                .requestMatchers("/main", "/user/**", "/board/info", "/board").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
