@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 @RequestMapping("/board")
 public class BoardController {
 
@@ -47,11 +46,13 @@ public class BoardController {
         return boardService.getBoardInfo(boardId);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/post")
     public ResponseEntity<DefaultResponseDto> createBoard(HttpServletRequest request, @RequestBody BoardPostRequestDto board) {
         return boardService.createBoard(request, board);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PutMapping("/edit")
     public ResponseEntity<DefaultResponseDto> editBoard(HttpServletRequest request, @RequestBody BoardEditRequestDto board) {
         if (!boardService.isExistBoard(board.getBoardId())) {
