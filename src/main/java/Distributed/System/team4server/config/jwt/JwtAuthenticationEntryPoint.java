@@ -19,7 +19,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
-        log.info("불가능한 접근. 401 Unauthorized");
+        log.info("impossible access. 401 Unauthorized");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

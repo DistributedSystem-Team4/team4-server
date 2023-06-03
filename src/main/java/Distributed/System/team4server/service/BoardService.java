@@ -49,6 +49,9 @@ public class BoardService {
     public ResponseEntity<DefaultResponseDto> editBoard(HttpServletRequest request, BoardEditRequestDto board) {
         Optional<Board> board1 = boardRepository.findById(board.getBoardId());
 
+        log.info("before title:{}, before content:{}", board1.get().getTitle(), board1.get().getContent());
+        log.info("after title:{}, after content:{}", board.getTitle(), board.getContent());
+
         board1.ifPresent(b -> {
             b.setTitle(board.getTitle());
             b.setContent(board.getContent());
@@ -88,7 +91,7 @@ public class BoardService {
 
     public boolean isValidPage(Long pageNum) {
         long count = boardRepository.count();
-        log.info("현재 게시글 총 개수 : {}", count);
+        log.info("Total number of current posts : {}", count);
         return count / 10 >= pageNum;
     }
 
