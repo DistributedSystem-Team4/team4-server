@@ -34,7 +34,7 @@ public class DefaultResponseDto {
     public static ResponseEntity<DefaultResponseDto> result(HttpStatus status, Object result, long totalBoard) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf-8");
-        headers.add("Totalpage", String.valueOf(totalBoard));
+        headers.add("Totalboard", String.valueOf(totalBoard));
 
         DefaultResponseDto response = new DefaultResponseDto();
         response.setStatus(status);

@@ -66,7 +66,7 @@ public class BoardService {
 
     public ResponseEntity<DefaultResponseDto> getBoardList(Pageable pageable) {
         Page<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
-        long count = boardRepository.count() / 10;
+        long count = boardRepository.count();
 
         List<BoardReadResponseDto> list = new ArrayList<>();
         for (Board board : boardList) {

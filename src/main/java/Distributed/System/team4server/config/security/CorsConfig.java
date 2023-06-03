@@ -18,7 +18,7 @@ public class CorsConfig {
         //config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
-        config.addExposedHeader("Totalpage");
+        config.addExposedHeader("Totalboard");
         config.addAllowedMethod("*");
 
         source.registerCorsConfiguration("/**", config);
