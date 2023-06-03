@@ -59,6 +59,11 @@ public class BoardService {
         return result(HttpStatus.OK, null);
     }
 
+    public ResponseEntity<DefaultResponseDto> deleteBoard(HttpServletRequest request, Long boardId) {
+        boardRepository.deleteBoardByBoardId(boardId);
+        return result(HttpStatus.OK, null);
+    }
+
     public ResponseEntity<DefaultResponseDto> getBoardList(Pageable pageable) {
         Page<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
         long count = boardRepository.count() / 10;

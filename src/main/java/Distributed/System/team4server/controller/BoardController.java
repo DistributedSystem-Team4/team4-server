@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -64,4 +65,13 @@ public class BoardController {
         return boardService.editBoard(request, board);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @DeleteMapping("/delete")
+    public ResponseEntity<DefaultResponseDto> deleteBoard(HttpServletRequest request, @RequestParam Long boardId) {
+        if (!boardService.isExistBoard(boardId)) {
+            return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
+        }
+
+        return boardService.deleteBoard(request, boardId);
+    }
 }
