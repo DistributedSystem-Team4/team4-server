@@ -32,6 +32,8 @@ dependencies {
 	implementation 'org.springframework.data:spring-data-hadoop:2.5.0.RELEASE'
 	implementation 'org.apache.hadoop:hadoop-annotations:3.2.3'
 	implementation 'org.springframework.data:spring-data-hadoop-config:2.5.0.RELEASE'
+	implementation 'org.apache.hadoop:hadoop-common:2.7.3'
+
 
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
