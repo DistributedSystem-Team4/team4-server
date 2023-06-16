@@ -22,7 +22,7 @@ public class HdfsService {
     private String hdfsFS;
 
     private List<String> logCache = new ArrayList<>();
-    private int logCacheThreshold = 300;
+    private int logCacheThreshold = 1000;
 
     public void cacheLog(String log) {
         logCache.add(log);
