@@ -4,12 +4,14 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class HdfsService {
 
@@ -32,7 +34,7 @@ public class HdfsService {
             bufferedWriter.close();
             fileSystem.close();
         } catch (IOException e) {
-
+            log.error("HDFS IOException. msg:{}", e);
         }
     }
 }
