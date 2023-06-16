@@ -32,20 +32,12 @@ public class BoardController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = "", params = "page")
     public ResponseEntity<DefaultResponseDto> getBoardListByPage(@PageableDefault(size = 10) Pageable pageable) {
-        if (!boardService.isValidPage((long) pageable.getPageNumber())) {
-            return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
-        }
-
         return boardService.getBoardList(pageable);
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/info")
     public ResponseEntity<DefaultResponseDto> getBoardInfo(@RequestParam Long boardId) {
-        if (!boardService.isExistBoard(boardId)) {
-            return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
-        }
-
         return boardService.getBoardInfo(boardId);
     }
 
@@ -58,20 +50,12 @@ public class BoardController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PutMapping("/edit")
     public ResponseEntity<DefaultResponseDto> editBoard(HttpServletRequest request, @RequestBody BoardEditRequestDto board) {
-        if (!boardService.isExistBoard(board.getBoardId())) {
-            return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
-        }
-
         return boardService.editBoard(request, board);
     }
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<DefaultResponseDto> deleteBoard(HttpServletRequest request, @RequestParam Long boardId) {
-        if (!boardService.isExistBoard(boardId)) {
-            return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
-        }
-
         return boardService.deleteBoard(request, boardId);
     }
 }
