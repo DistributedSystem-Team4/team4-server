@@ -10,17 +10,15 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Transactional
 @Service
 public class HdfsService {
 
     @Value("${hadoop.fs.defaultFS}")
     private String hdfsFS;
 
-    public void uploadHdfs(String file) {
+    public synchronized void uploadHdfs(String file) {
         try {
             Configuration conf = new Configuration();
             conf.set("fs.defaultFS", hdfsFS);
