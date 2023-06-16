@@ -37,13 +37,13 @@ public class UserService {
 
         if (user.isPresent()) {
             end = LocalDateTime.now();
-            userLog = "isExistUserId 401 /user/validate " + Duration.between(start, end);
+            userLog = "isExistUserId 401 /user/validate " + Duration.between(start, end).toMillis();
             hdfsService.uploadHdfs(userLog);
             return result(HttpStatus.CONFLICT, "이미 가입되어 있는 유저입니다.");
         }
 
         end = LocalDateTime.now();
-        userLog = "isExistUserId 200 /user/validate " + Duration.between(start, end);
+        userLog = "isExistUserId 200 /user/validate " + Duration.between(start, end).toMillis();
         hdfsService.uploadHdfs(userLog);
         return result(HttpStatus.OK, "사용 가능한 아이디입니다.");
     }
