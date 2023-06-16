@@ -2,6 +2,7 @@ package Distributed.System.team4server.controller;
 
 import Distributed.System.team4server.dto.DefaultResponseDto;
 import Distributed.System.team4server.dto.user.UserSaveRequestDto;
+import Distributed.System.team4server.service.HdfsService;
 import Distributed.System.team4server.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

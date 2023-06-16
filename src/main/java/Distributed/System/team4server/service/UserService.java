@@ -9,6 +9,8 @@ import Distributed.System.team4server.dto.user.UserDto;
 import Distributed.System.team4server.dto.user.UserSaveRequestDto;
 import Distributed.System.team4server.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +28,25 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final HdfsService hdfsService;
 
     @Transactional(readOnly = true)
     public ResponseEntity<DefaultResponseDto> findUser(String userId) {
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = null;
         Optional<User> user = userRepository.findByUserId(userId);
+        String userLog = "";
 
         if (user.isPresent()) {
+            end = LocalDateTime.now();
+            userLog = "isExistUserId 401 /user/validate " + Duration.between(start, end);
+            hdfsService.uploadHdfs(userLog);
             return result(HttpStatus.CONFLICT, "이미 가입되어 있는 유저입니다.");
         }
 
+        end = LocalDateTime.now();
+        userLog = "isExistUserId 200 /user/validate " + Duration.between(start, end);
+        hdfsService.uploadHdfs(userLog);
         return result(HttpStatus.OK, "사용 가능한 아이디입니다.");
     }
 
