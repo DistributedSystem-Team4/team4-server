@@ -4,9 +4,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -22,7 +23,7 @@ public class HdfsService {
     private String hdfsFS;
 
     private List<String> logCache = new ArrayList<>();
-    private int logCacheThreshold = 1000;
+    private int logCacheThreshold = 500;
 
     public void cacheLog(String log) {
         logCache.add(log);
@@ -34,10 +35,11 @@ public class HdfsService {
 
     private void writeToHdfs() {
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmssSSS");
             Configuration conf = new Configuration();
             conf.set("fs.defaultFS", hdfsFS);
             FileSystem hdfs = FileSystem.get(conf);
-            Path filePath = new Path("/logloadbalancer/user.txt");
+            Path filePath = new Path("/logloadbalancer/" + LocalDateTime.now().getDayOfMonth() + "/" + LocalDateTime.now().format(formatter));
 
             // HDFS 파일이 이미 존재하는지 확인
             if (!hdfs.exists(filePath)) {

@@ -1,3 +1,12 @@
+default:
+  path: "/logloadbalancer/master.txt"
+
+profiles:
+  - name: worker1
+    path: "/logloadbalancer/worker1.txt"
+  - name: worker2
+    path: "/logloadbalancer/worker2.txt"
+
 spring:
   jpa:
     database: mysql
