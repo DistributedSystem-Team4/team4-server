@@ -37,13 +37,13 @@ public class UserService {
         if (user.isPresent()) {
             end = LocalDateTime.now();
             userLog = "isExistUserId 401 /user/validate " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(userLog);
+            hdfsService.cacheLog(userLog);
             return result(HttpStatus.CONFLICT, "이미 가입되어 있는 유저입니다.");
         }
 
         end = LocalDateTime.now();
         userLog = "isExistUserId 200 /user/validate " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(userLog);
+        hdfsService.cacheLog(userLog);
         return result(HttpStatus.OK, "사용 가능한 아이디입니다.");
     }
 
@@ -54,7 +54,7 @@ public class UserService {
         if (userRepository.findByUserId(user.getUserId()).isPresent()) {
             end = LocalDateTime.now();
             userLog = "register 401 /user/register " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(userLog);
+            hdfsService.cacheLog(userLog);
             return result(HttpStatus.CONFLICT, "이미 가입되어 있는 유저입니다.");
         }
 
@@ -72,7 +72,7 @@ public class UserService {
         userRepository.save(newUser);
         end = LocalDateTime.now();
         userLog = "register 200 /user/register " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(userLog);
+        hdfsService.cacheLog(userLog);
 
         return result(HttpStatus.OK, new UserDto(newUser));
     }

@@ -51,7 +51,7 @@ public class BoardService {
 
         end = LocalDateTime.now();
         boardLog = "createBoard 201 /board/post " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(boardLog);
+        hdfsService.cacheLog(boardLog);
         return result(HttpStatus.CREATED, savedBoard.getBoardId());
     }
 
@@ -62,7 +62,7 @@ public class BoardService {
         if (!isExistBoard(board.getBoardId())) {
             end = LocalDateTime.now();
             boardLog = "editBoard 404 /board/edit " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(boardLog);
+            hdfsService.cacheLog(boardLog);
             return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
         }
 
@@ -80,7 +80,7 @@ public class BoardService {
 
         end = LocalDateTime.now();
         boardLog = "editBoard 200 /board/edit " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(boardLog);
+        hdfsService.cacheLog(boardLog);
         return result(HttpStatus.OK, null);
     }
 
@@ -91,14 +91,14 @@ public class BoardService {
         if (!isExistBoard(boardId)) {
             end = LocalDateTime.now();
             boardLog = "deleteBoard 404 /board/delete " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(boardLog);
+            hdfsService.cacheLog(boardLog);
             return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
         }
 
         boardRepository.deleteBoardByBoardId(boardId);
         end = LocalDateTime.now();
         boardLog = "deleteBoard 200 /board/delete " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(boardLog);
+        hdfsService.cacheLog(boardLog);
         return result(HttpStatus.OK, null);
     }
 
@@ -109,7 +109,7 @@ public class BoardService {
         if (!isValidPage((long) pageable.getPageNumber())) {
             end = LocalDateTime.now();
             boardLog = "getBoardList 404 /board " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(boardLog);
+            hdfsService.cacheLog(boardLog);
             return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
         }
 
@@ -124,7 +124,7 @@ public class BoardService {
 
         end = LocalDateTime.now();
         boardLog = "getBoardList 200 /board " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(boardLog);
+        hdfsService.cacheLog(boardLog);
         return result(HttpStatus.OK, list, count);
     }
 
@@ -135,13 +135,13 @@ public class BoardService {
         if (!isExistBoard(boardId)) {
             end = LocalDateTime.now();
             boardLog = "getBoardInfo 404 /board/info " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(boardLog);
+            hdfsService.cacheLog(boardLog);
             return DefaultResponseDto.result(HttpStatus.NOT_FOUND, null);
         }
 
         end = LocalDateTime.now();
         boardLog = "getBoardInfo 200 /board/info " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(boardLog);
+        hdfsService.cacheLog(boardLog);
         return result(HttpStatus.OK, boardRepository.findById(boardId).get());
     }
 

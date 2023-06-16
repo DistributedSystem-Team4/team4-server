@@ -43,7 +43,7 @@ public class AuthService {
         if (user == null) {
             end = LocalDateTime.now();
             userLog = "login 400 /user/login " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(userLog);
+            hdfsService.cacheLog(userLog);
             log.info("{} LOGIN FAILED: 존재하지 않는 ID. (userId: {})", request, userLoginDto.getUserId());
             return result(HttpStatus.BAD_REQUEST, "존재하지 않는 ID입니다.");
         }
@@ -51,7 +51,7 @@ public class AuthService {
         if (!passwordEncoder.matches(userLoginDto.getPasswd(), user.getPasswd())) {
             end = LocalDateTime.now();
             userLog = "login 400 /user/login " + Duration.between(start, end).toMillis();
-            hdfsService.uploadHdfs(userLog);
+            hdfsService.cacheLog(userLog);
             log.info("{} LOGIN FAILED: 비밀번호가 일치하지 않습니다. (userId: {})", request, userLoginDto.getUserId());
             return result(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
         }
@@ -68,7 +68,7 @@ public class AuthService {
 
         end = LocalDateTime.now();
         userLog = "login 200 /user/login " + Duration.between(start, end).toMillis();
-        hdfsService.uploadHdfs(userLog);
+        hdfsService.cacheLog(userLog);
         log.info("LOGIN SUCCESS: (userId: {})", userLoginDto.getUserId());
         return result(HttpStatus.OK, new UserDto(user), token);
     }
