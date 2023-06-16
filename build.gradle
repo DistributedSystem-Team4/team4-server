@@ -29,12 +29,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	implementation 'org.springframework.data:spring-data-hadoop:2.5.0.RELEASE'
-	implementation 'org.apache.hadoop:hadoop-annotations:3.2.3'
-	implementation 'org.springframework.data:spring-data-hadoop-config:2.5.0.RELEASE'
-	implementation 'org.apache.hadoop:hadoop-common:2.7.3'
-
-
+	//implementation 'org.springframework.data:spring-data-hadoop:2.1.2.RELEASE'
+	implementation 'org.apache.hadoop:hadoop-client:3.2.3'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
@@ -45,8 +41,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.apache.hadoop:hadoop-hdfs:3.2.3'
-
 }
 
 tasks.named('test') {
