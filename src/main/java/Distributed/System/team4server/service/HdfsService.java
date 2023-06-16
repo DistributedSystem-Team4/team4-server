@@ -4,34 +4,35 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class HdfsService {
 
-    private final Configuration hadoopConfig;
+    @Value("${hadoop.fs.defaultFS}")
+    private String hdfsFS;
 
     public void uploadHdfs(String file) {
         try {
-            FileSystem hdfs = FileSystem.get(hadoopConfig);
+            Configuration conf = new Configuration();
+            conf.set("fs.defaultFS", hdfsFS);
+            FileSystem fileSystem = FileSystem.get(conf);
 
             Path path = new Path("/logloadbalancer/user.txt");
 
-            OutputStream outStream = hdfs.create(path);
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-            writer.write(file);
+            OutputStream outputStream = fileSystem.append(path);
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+            bufferedWriter.write(file);
+            bufferedWriter.newLine();
 
-            writer.close();
-            hdfs.close();
+            bufferedWriter.close();
+            fileSystem.close();
         } catch (IOException e) {
             log.error("HDFS IOException. msg:{}", e);
         }
