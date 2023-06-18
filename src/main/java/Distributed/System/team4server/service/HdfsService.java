@@ -33,7 +33,7 @@ public class HdfsService {
         }
     }
 
-    private void writeToHdfs() {
+    private synchronized void writeToHdfs() {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmssSSS");
             Configuration conf = new Configuration();
