@@ -33,13 +33,24 @@ public class HdfsService {
         }
     }
 
-    private synchronized void writeToHdfs() {
+    private synchronized List<String> createTmp() {
+        List<String> tmp = new ArrayList<>();
+        tmp.addAll(logCache);
+
+        return tmp;
+    }
+
+    private void writeToHdfs() {
         try {
+            List<String> tmp = createTmp();
+            logCache.clear();
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmssSSS");
             Configuration conf = new Configuration();
             conf.set("fs.defaultFS", hdfsFS);
             FileSystem hdfs = FileSystem.get(conf);
-            Path filePath = new Path("/logloadbalancer/" + LocalDateTime.now().getDayOfMonth() + "/" + LocalDateTime.now().format(formatter));
+            Path filePath = new Path(
+                    "/logloadbalancer/" + LocalDateTime.now().getDayOfMonth() + "/" + LocalDateTime.now().format(formatter));
 
             // HDFS 파일이 이미 존재하는지 확인
             if (!hdfs.exists(filePath)) {
@@ -52,16 +63,13 @@ public class HdfsService {
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
 
             // 로그 캐시의 모든 로그를 파일에 작성
-            for (String log : logCache) {
+            for (String log : tmp) {
                 bufferedWriter.write(log);
                 bufferedWriter.newLine();
             }
 
             bufferedWriter.close();
             outputStream.close();
-
-            // 캐시 비우기
-            logCache.clear();
         } catch (IOException e) {
             log.error("HDFS IOException. msg={}", e.getMessage());
         }
